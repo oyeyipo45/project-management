@@ -1,4 +1,5 @@
 import { InjectRepository } from '@nestjs/typeorm';
+import { User } from 'src/auth/user.entity';
 import { Repository } from 'typeorm';
 import { CreateTaskDto } from './dto/create-task.dto';
 import { GetTasksFilterDto } from './dto/tasks-filter-dto';
@@ -32,13 +33,14 @@ export class TaskHelper {
     return tasks;
   }
 
-  async createTask(payload: CreateTaskDto): Promise<Task> {
+  async createTask(payload: CreateTaskDto, user: User): Promise<Task> {
     const { title, description } = payload;
 
     const task = this.taskRepo.create({
       title,
       description,
       status: TaskStatus.OPEN,
+      user,
     });
 
     const createdTask = await this.taskRepo.save(task);
@@ -48,6 +50,5 @@ export class TaskHelper {
 
 export class ResponseDto {
   message: string;
-
   data: any;
 }
