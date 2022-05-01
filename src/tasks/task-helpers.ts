@@ -12,9 +12,10 @@ export class TaskHelper {
     private taskRepo: Repository<Task>,
   ) {}
 
-  async getTasks(filterDto: GetTasksFilterDto): Promise<Task[]> {
+  async getTasks(filterDto: GetTasksFilterDto, user: User): Promise<Task[]> {
     const { status, search } = filterDto;
     const query = this.taskRepo.createQueryBuilder('task');
+    query.where({ user });
 
     if (status) {
       query.andWhere('task.status = :status', { status });
@@ -22,7 +23,7 @@ export class TaskHelper {
 
     if (search) {
       query.andWhere(
-        'LOWER(task.title) LIKE LOWER(:search) OR LOWER(task.description) LIKE LOWER(:search)',
+        '(LOWER(task.title) LIKE LOWER(:search) OR LOWER(task.description) LIKE LOWER(:search))',
         {
           search: `%${search}%`,
         },
