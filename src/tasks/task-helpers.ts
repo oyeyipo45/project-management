@@ -2,16 +2,16 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateTaskDto } from './dto/create-task.dto';
 import { GetTasksFilterDto } from './dto/tasks-filter-dto';
-import { TaskEntity } from './task.entity';
+import { Task } from './task.entity';
 import { TaskStatus } from './tasks-status-enum';
 
 export class TaskHelper {
   constructor(
-    @InjectRepository(TaskEntity)
-    private taskRepo: Repository<TaskEntity>,
+    @InjectRepository(Task)
+    private taskRepo: Repository<Task>,
   ) {}
 
-  async getTasks(filterDto: GetTasksFilterDto): Promise<TaskEntity[]> {
+  async getTasks(filterDto: GetTasksFilterDto): Promise<Task[]> {
     const { status, search } = filterDto;
     const query = this.taskRepo.createQueryBuilder('task');
 
@@ -32,7 +32,7 @@ export class TaskHelper {
     return tasks;
   }
 
-  async createTask(payload: CreateTaskDto): Promise<TaskEntity> {
+  async createTask(payload: CreateTaskDto): Promise<Task> {
     const { title, description } = payload;
 
     const task = this.taskRepo.create({

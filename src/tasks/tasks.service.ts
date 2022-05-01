@@ -2,7 +2,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { TaskStatus } from './tasks-status-enum';
 import { CreateTaskDto } from './dto/create-task.dto';
 import { GetTasksFilterDto } from './dto/tasks-filter-dto';
-import { TaskEntity } from './task.entity';
+import { Task } from './task.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Not, Repository } from 'typeorm';
 import { ResponseDto, TaskHelper } from './task-helpers';
@@ -11,15 +11,15 @@ import { ResponseDto, TaskHelper } from './task-helpers';
 export class TasksService {
   constructor(
     private readonly taskHelpers: TaskHelper,
-    @InjectRepository(TaskEntity)
-    private taskRepo: Repository<TaskEntity>,
+    @InjectRepository(Task)
+    private taskRepo: Repository<Task>,
   ) {}
 
-  getTasks(filterDto: GetTasksFilterDto): Promise<TaskEntity[]> {
+  getTasks(filterDto: GetTasksFilterDto): Promise<Task[]> {
     return this.taskHelpers.getTasks(filterDto);
   }
 
-  async getTaskById(id: string): Promise<TaskEntity> {
+  async getTaskById(id: string): Promise<Task> {
     const found = await this.taskRepo.findOne({
       where: {
         id,
@@ -31,7 +31,7 @@ export class TasksService {
     return found;
   }
 
-  createTask(createTaskDto: CreateTaskDto): Promise<TaskEntity> {
+  createTask(createTaskDto: CreateTaskDto): Promise<Task> {
     return this.taskHelpers.createTask(createTaskDto);
   }
 
@@ -44,7 +44,7 @@ export class TasksService {
     return;
   }
 
-  async updateTaskStatus(id: string, status: TaskStatus): Promise<TaskEntity> {
+  async updateTaskStatus(id: string, status: TaskStatus): Promise<Task> {
     const task = await this.getTaskById(id);
     task.status = status;
 
