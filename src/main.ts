@@ -7,7 +7,7 @@ async function bootstrap() {
   const logger = new Logger();
   const app = await NestFactory.create(AppModule);
   app.useGlobalInterceptors(new TransformInterceptor());
-  const port = process.env.PORT;
+  const port = process.env.PORT || 3000;
   await app.listen(port);
   logger.log(`Application listening on port ${port}`);
 }
