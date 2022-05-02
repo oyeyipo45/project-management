@@ -1,6 +1,5 @@
 import {
   ConflictException,
-  ForbiddenException,
   InternalServerErrorException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
