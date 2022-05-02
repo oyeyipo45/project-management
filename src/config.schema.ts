@@ -8,4 +8,5 @@ export const configurationValidation = Joi.object({
   DB_DATABASE: Joi.string().required(),
   DB_TYPE: Joi.string().required(),
   JWT_SECRET: Joi.string().required(),
+  PORT: Joi.number().default(3000),
 });
